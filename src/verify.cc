@@ -22,6 +22,7 @@
 #include "openssl/evp.h"
 #include "openssl/rsa.h"
 #include "openssl/sha.h"
+#include <iostream>
 
 namespace google {
 namespace jwt_verify {
@@ -35,8 +36,14 @@ inline const uint8_t* castToUChar(const absl::string_view& str) {
 bool verifySignatureRSA(EVP_PKEY* key, const EVP_MD* md,
                         const uint8_t* signature, size_t signature_len,
                         const uint8_t* signed_data, size_t signed_data_len) {
+  std::cout << "Before verifySignatureRSA"  << std::endl;
   if (key == nullptr || md == nullptr || signature == nullptr ||
       signed_data == nullptr) {
+      std::cout << "Inside verifySignatureRSA failure:"  << std::endl;
+          std::cout << signature  << std::endl;
+              std::cout << signed_data  << std::endl;
+                  std::cout << md  << std::endl;
+          std::cout << key << std::endl;
     return false;
   }
   bssl::UniquePtr<EVP_MD_CTX> md_ctx(EVP_MD_CTX_create());
@@ -118,7 +125,7 @@ Status verifyJwt(const Jwt& jwt, const Jwks& jwks, int64_t now) {
       continue;
     }
     kid_alg_matched = true;
-
+      std::cout << "kid algo matched"  << std::endl;
     if (jwk->kty_ == "EC" &&
         verifySignatureEC(jwk->ec_key_.get(), jwt.signature_, signed_data)) {
       // Verification succeeded.

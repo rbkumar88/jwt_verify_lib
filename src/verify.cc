@@ -37,17 +37,16 @@ inline const uint8_t* castToUChar(const absl::string_view& str) {
 bool verifySignatureRSA(EVP_PKEY* key, const EVP_MD* md,
                         const uint8_t* signature, size_t signature_len,
                         const uint8_t* signed_data, size_t signed_data_len) {
-    printf("before basic validation");
 std::cout << key << std::endl;
   std::cout << md << std::endl;
     std::cout << signature << std::endl;
       std::cout << signed_data << std::endl;
-      printf("just before basic validation");
+    std::cout << "before basic validation" << std::endl;
   if (key == nullptr || md == nullptr || signature == nullptr ||
       signed_data == nullptr) {
     return false;
   }
-  printf("after basic validation");
+    std::cout << "after basic validation" << std::endl;
   bssl::UniquePtr<EVP_MD_CTX> md_ctx(EVP_MD_CTX_create());
 
   EVP_DigestVerifyInit(md_ctx.get(), nullptr, md, nullptr, key);

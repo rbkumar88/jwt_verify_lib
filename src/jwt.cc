@@ -64,7 +64,7 @@ Status Jwt::parseFromString(const std::string& jwt) {
   }
   alg_ = header_json_["alg"].GetString();
 
-  if (alg_ != "RS256" && alg_ != "ES256") {
+  if (alg_ != "RS256" && alg_ != "ES256" && alg_ != "RS512") {
     return Status::JwtHeaderNotImplementedAlg;
   }
 

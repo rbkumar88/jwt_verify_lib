@@ -124,7 +124,7 @@ Status verifyJwt(const Jwt& jwt, const Jwks& jwks, int64_t now) {
       // Verification succeeded.
       return Status::Ok;
     } else if ((jwk->pem_format_ || jwk->kty_ == "RSA") &&
-               verifySignatureRSA(jwk->evp_pkey_.get(), EVP_sha256(),
+               verifySignatureRSA(jwk->evp_pkey_.get(), EVP_sha512(),
                                   jwt.signature_, signed_data)) {
       // Verification succeeded.
       return Status::Ok;

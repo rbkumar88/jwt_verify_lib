@@ -22,6 +22,8 @@
 #include "openssl/evp.h"
 #include "openssl/rsa.h"
 #include "openssl/sha.h"
+#include <stdio.h>
+#include <iostream>
 
 namespace google {
 namespace jwt_verify {
@@ -35,10 +37,17 @@ inline const uint8_t* castToUChar(const absl::string_view& str) {
 bool verifySignatureRSA(EVP_PKEY* key, const EVP_MD* md,
                         const uint8_t* signature, size_t signature_len,
                         const uint8_t* signed_data, size_t signed_data_len) {
+    printf("before basic validation");
+std::cout << key << std::endl;
+  std::cout << md << std::endl;
+    std::cout << signature << std::endl;
+      std::cout << signed_data << std::endl;
+      printf("just before basic validation");
   if (key == nullptr || md == nullptr || signature == nullptr ||
       signed_data == nullptr) {
     return false;
   }
+  printf("after basic validation");
   bssl::UniquePtr<EVP_MD_CTX> md_ctx(EVP_MD_CTX_create());
 
   EVP_DigestVerifyInit(md_ctx.get(), nullptr, md, nullptr, key);

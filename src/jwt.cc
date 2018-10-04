@@ -155,10 +155,10 @@ Status Jwt::parseFromString(const std::string& jwt) {
   }
 
   // Set up signature
-  //if (!absl::WebSafeBase64Unescape(jwt_split[2], &signature_)) {
+  if (!absl::Base64Unescape(jwt_split[2], &signature_)) {
     // Signature is a bad Base64url input.
-    //return Status::JwtSignatureParseError;
-  //}
+    return Status::JwtSignatureParseError;
+  }
   return Status::Ok;
 }
 

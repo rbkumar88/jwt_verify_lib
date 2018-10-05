@@ -124,8 +124,7 @@ class EvpPkeyGetter : public WithStatus {
   bssl::UniquePtr<RSA> createRsaFromJwk(const std::string& n,
                                         const std::string& e) {
     bssl::UniquePtr<RSA> rsa(RSA_new());
-    rsa->n = 
-      (n).release();
+    rsa->n = createBigNumFromBase64UrlString(n).release();
     rsa->e = createBigNumFromBase64UrlString(e).release();
     if (rsa->n == nullptr || rsa->e == nullptr) {
       // RSA public key field is missing or has parse error.

@@ -25,6 +25,8 @@
 #include "openssl/evp.h"
 #include "openssl/rsa.h"
 #include "openssl/sha.h"
+#include "openssl/bio.h"
+#include "openssl/pem.h"
 
 namespace google {
 namespace jwt_verify {
@@ -264,6 +266,18 @@ void Jwks::createFromPemCore(const std::string& pkey_pem) {
     keys_.push_back(std::move(key_ptr));
   }
 }
+RSA* createPublicRSA(std::string key) {
+  RSA *rsa = NULL;
+  BIO *keybio;
+  const char* c_string = key.c_str();
+  keybio = BIO_new_mem_buf((void*)c_string, -1);
+  if (keybio==NULL) {
+      return 0;
+  }
+  rsa = PEM_read_bio_RSA_PUBKEY(keybio, &rsa,NULL, NULL);
+  return rsa;
+}  
+  
 
 void Jwks::createFromJwksCore(const std::string& pkey_jwks) {
   keys_.clear();

@@ -63,8 +63,8 @@ class EvpPkeyGetter : public WithStatus {
         std::cout << pkey_der.length() << std::endl;
             std::cout << castToUChar(pkey_der) << std::endl;
     auto rsa = bssl::UniquePtr<RSA>(
-//      createPublicRSA(pkey_der));
-        RSA_public_key_from_bytes(castToUChar(pkey_der), pkey_der.length()));
+      createPublicRSA(pkey_der));
+//        RSA_public_key_from_bytes(castToUChar(pkey_der), pkey_der.length()));
     if (!rsa) {
       updateStatus(Status::JwksPemParseError);
       return nullptr;
@@ -124,7 +124,8 @@ class EvpPkeyGetter : public WithStatus {
   bssl::UniquePtr<RSA> createRsaFromJwk(const std::string& n,
                                         const std::string& e) {
     bssl::UniquePtr<RSA> rsa(RSA_new());
-    rsa->n = createBigNumFromBase64UrlString(n).release();
+    rsa->n = 
+      (n).release();
     rsa->e = createBigNumFromBase64UrlString(e).release();
     if (rsa->n == nullptr || rsa->e == nullptr) {
       // RSA public key field is missing or has parse error.
@@ -267,7 +268,7 @@ void Jwks::createFromPemCore(const std::string& pkey_pem) {
     keys_.push_back(std::move(key_ptr));
   }
 }
-RSA* createPublicRSA(std::string& key) {
+RSA* createPublicRSA(const std::string& key) {
   RSA *rsa = NULL;
   BIO *keybio;
   const char* c_string = key.c_str();

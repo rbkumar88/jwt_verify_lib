@@ -53,15 +53,15 @@ class EvpPkeyGetter : public WithStatus {
     // Header "-----BEGIN CERTIFICATE ---"and tailer "-----END CERTIFICATE ---"
     // should have been removed.
     std::string pkey_der;
-    if (!absl::WebSafeBase64Unescape(pkey_pem, &pkey_der) || pkey_der.empty()) {
+    if (!absl::Base64Unescape(pkey_pem, &pkey_der) || pkey_der.empty()) {
       updateStatus(Status::JwksPemBadBase64);
       return nullptr;
     }
         std::cout << "inside createEvpPKeyFromStr" << std::endl;
-    std::cout << pkey_der << std::endl;
         std::cout << pkey_der.length() << std::endl;
     auto rsa = bssl::UniquePtr<RSA>(
         RSA_public_key_from_bytes(castToUChar(pkey_der), pkey_der.length()));
+    std::cout << rsa << std::endl;
     if (!rsa) {
       updateStatus(Status::JwksPemParseError);
       return nullptr;

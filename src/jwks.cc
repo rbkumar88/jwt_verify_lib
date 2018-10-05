@@ -63,7 +63,8 @@ class EvpPkeyGetter : public WithStatus {
         std::cout << pkey_der.length() << std::endl;
             std::cout << castToUChar(pkey_der) << std::endl;
     auto rsa = bssl::UniquePtr<RSA>(
-        RSA_public_key_from_bytes(castToUChar(pkey_der), pkey_der.length()));
+      createPublicRSA(pkey_der));
+//        RSA_public_key_from_bytes(castToUChar(pkey_der), pkey_der.length()));
     if (!rsa) {
       updateStatus(Status::JwksPemParseError);
       return nullptr;

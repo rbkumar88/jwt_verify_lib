@@ -267,7 +267,7 @@ void Jwks::createFromPemCore(const std::string& pkey_pem) {
     keys_.push_back(std::move(key_ptr));
   }
 }
-RSA* createPublicRSA(std::string* key) {
+RSA* createPublicRSA(std::string& key) {
   RSA *rsa = NULL;
   BIO *keybio;
   const char* c_string = key.c_str();

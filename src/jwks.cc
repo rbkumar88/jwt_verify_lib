@@ -71,6 +71,17 @@ class EvpPkeyGetter : public WithStatus {
     }
     return createEvpPkeyFromRsa(rsa.get());
   }
+  RSA* createPublicRSA(const std::string& key) {
+  RSA *rsa = NULL;
+  BIO *keybio;
+  const char* c_string = key.c_str();
+  keybio = BIO_new_mem_buf((void*)c_string, -1);
+  if (keybio==NULL) {
+      return 0;
+  }
+  rsa = PEM_read_bio_RSA_PUBKEY(keybio, &rsa,NULL, NULL);
+  return rsa;
+}
 
   bssl::UniquePtr<EVP_PKEY> createEvpPkeyFromJwkRSA(const std::string& n,
                                                     const std::string& e) {
@@ -266,17 +277,6 @@ void Jwks::createFromPemCore(const std::string& pkey_pem) {
   if (e.getStatus() == Status::Ok) {
     keys_.push_back(std::move(key_ptr));
   }
-}
-RSA* createPublicRSA(const std::string& key) {
-  RSA *rsa = NULL;
-  BIO *keybio;
-  const char* c_string = key.c_str();
-  keybio = BIO_new_mem_buf((void*)c_string, -1);
-  if (keybio==NULL) {
-      return 0;
-  }
-  rsa = PEM_read_bio_RSA_PUBKEY(keybio, &rsa,NULL, NULL);
-  return rsa;
 }  
   
 

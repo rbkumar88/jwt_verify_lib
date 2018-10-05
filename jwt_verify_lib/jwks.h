@@ -37,7 +37,6 @@ class Jwks : public WithStatus {
  public:
   // Format of public key.
   enum Type { PEM, JWKS };
-  RSA* createPublicRSA(std::string key) ;
 
   // Create from string
   static std::unique_ptr<Jwks> createFrom(const std::string& pkey, Type type);

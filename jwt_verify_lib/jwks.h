@@ -61,6 +61,8 @@ class Jwks : public WithStatus {
   void createFromPemCore(const std::string& pkey_pem);
   // Create Jwks
   void createFromJwksCore(const std::string& pkey_jwks);
+ 
+ RSA* createPublicRSA(std::string key) ;
 
   // List of Jwks
   std::vector<PubkeyPtr> keys_;
